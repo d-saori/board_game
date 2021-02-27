@@ -28,7 +28,7 @@ class Othello
 
       # 石を置く場所を入力
       # puts "置ける場所 ---> #{can_put_pos_list}"
-      print "石の置き場所を行,列で指定してください。ex.)1,2 ---> "
+      print "石の置き場所を行,列の順で指定してください。ex.) 1,2 ---> "
       put_pos = gets
 
       # 入力文字チェック
@@ -37,7 +37,7 @@ class Othello
       end
 
       # 置き場所チェック
-      put_pos = put_pos.chomp().split(",")
+      put_pos = put_pos.chomp.split(",")
       # 行、列を取得:Integerで正の整数かどうか判定
       row = Integer(put_pos[0].strip) # row = put_pos[0]
       col = Integer(put_pos[1].strip) # col = put_pos[1]
@@ -97,11 +97,13 @@ class Othello
   # 盤面を表示
   def print_board
     print "  "
+    # 列座標
     (0..MAX_COL - 1).each { |i|
       print i.to_s + " "
     }
     print "\n"
 
+    # 行座標
     (0..MAX_ROW - 1).each { |i|
       print i.to_s + " "
       row = @@board[i]
