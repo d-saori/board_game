@@ -14,7 +14,7 @@ class Othello
   def start()
     # 初期化
     @turn = BLACK
-    make_board()
+    build_board()
     print_board()
 
     while true
@@ -70,7 +70,7 @@ class Othello
   private
 
     # オセロ盤の基礎作成
-    def make_board()
+    def build_board()
       @board = []
       # 外枠含めた全てのマス(10*10)を置き石無しの状態にする(初期化)
       MAX_ROW.times {
