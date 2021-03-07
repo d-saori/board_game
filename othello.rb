@@ -7,6 +7,8 @@ class Othello
   MAX_COL = 10 # 列
   # 石を置いたマスの8方向(左隣のマスから時計回り)に引っくり返せる石が無いかチェック
   DIRECTIONS = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
+  X = 0
+  Y = 1
 
   @board = nil
   @turn = nil
@@ -147,8 +149,8 @@ class Othello
           # 置いた石の周りに相手の石があるか確認
           DIRECTIONS.each { |direction|
             can_put_flag = false
-            search_row = row_num + direction[0]
-            search_col = col_num + direction[1]
+            search_row = row_num + direction[X]
+            search_col = col_num + direction[Y]
             # 相手の石で無い場合は次の方向を確認
             if @board[search_row][search_col] != enemy
               next
@@ -156,8 +158,8 @@ class Othello
 
             # 見つけた方向を捜査していく
             while true
-              search_row += direction[0]
-              search_col += direction[1]
+              search_row += direction[X]
+              search_col += direction[Y]
               if @board[search_row][search_col] != enemy && @board[search_row][search_col] != turn
                 break
               elsif @board[search_row][search_col] == enemy
@@ -185,8 +187,8 @@ class Othello
       @board[put_row][put_col] = @turn
       DIRECTIONS.each { |direction|
         reverse_pos = []
-        reverse_row = put_row + direction[0]
-        reverse_col = put_col + direction[1]
+        reverse_row = put_row + direction[X]
+        reverse_col = put_col + direction[Y]
         if @board[reverse_row][reverse_col] != enemy
           next
         end
@@ -194,8 +196,8 @@ class Othello
         reverse_flag = false
         reverse_pos << [reverse_row, reverse_col]
         while true
-          reverse_row += direction[0]
-          reverse_col += direction[1]
+          reverse_row += direction[X]
+          reverse_col += direction[Y]
           if @board[reverse_row][reverse_col] == enemy
             reverse_pos << [reverse_row, reverse_col]
           elsif @board[reverse_row][reverse_col] == @turn
