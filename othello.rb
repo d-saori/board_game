@@ -249,19 +249,11 @@ class Othello
     end
 
     def change_turn()
-      if @turn == BLACK
-        @turn = WHITE
-      else
-        @turn = BLACK
-      end
+      @turn == BLACK ? @turn = WHITE : @turn = BLACK
     end
 
     def get_enemy(turn)
-      if turn == BLACK
-        return WHITE
-      else
-        return BLACK
-      end
+      turn == BLACK ? WHITE : BLACK
     end
 
     def integer_string?(str)
