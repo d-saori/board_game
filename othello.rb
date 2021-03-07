@@ -10,11 +10,13 @@ class Othello
   X = 0
   Y = 1
 
-  @board = nil
-  @turn = nil
+  # 初期化
+  def initialize()
+    @board = nil
+    @turn = nil
+  end
 
   def start()
-    # 初期化
     @turn = BLACK
     build_board()
     print_board()
