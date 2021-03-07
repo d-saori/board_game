@@ -6,22 +6,22 @@ class Othello
   MAX_ROW = 10 # 行
   MAX_COL = 10 # 列
 
-  @@board = nil
-  @@turn = nil
+  @board = nil
+  @turn = nil
 
   def start()
     # 初期化
-    @@turn = BLACK
+    @turn = BLACK
     make_board()
     print_board()
 
     while true
-      puts "<< #{@@turn}のターン >>"
+      puts "<< #{@turn}のターン >>"
 
       # 石を置ける場所をチェック
-      can_put_pos_list = search_can_put_pos(@@turn)
+      can_put_pos_list = search_can_put_pos(@turn)
       if can_put_pos_list.empty?
-        puts "石を置ける場所が無い為、#{@@turn}のターンは飛ばされます。"
+        puts "石を置ける場所が無い為、#{@turn}のターンは飛ばされます。"
         change_turn()
         next
       end
@@ -69,31 +69,31 @@ class Othello
 
     # オセロ盤の基礎作成
     def make_board()
-      @@board = []
+      @board = []
       # 外枠含めた全てのマス(10*10)を置き石無しの状態にする(初期化)
       MAX_ROW.times {
         row = []
         MAX_COL.times {
           row << BLANK
         }
-        @@board << row
+        @board << row
       }
       
       # 外枠を作る[行][列]
       (0..MAX_COL - 1).each { |i|
-        @@board[0][i] = WALL # 最上行
-        @@board[MAX_ROW - 1][i] = WALL # 最下行
+        @board[0][i] = WALL # 最上行
+        @board[MAX_ROW - 1][i] = WALL # 最下行
       }
       (0..MAX_ROW - 1).each { |i|
-        @@board[i][0] = WALL # 左列
-        @@board[i][MAX_COL - 1] = WALL # 右列
+        @board[i][0] = WALL # 左列
+        @board[i][MAX_COL - 1] = WALL # 右列
       }
 
       # 中央に石を置く[行][列]
-      @@board[4][4] = WHITE
-      @@board[5][5] = WHITE
-      @@board[4][5] = BLACK
-      @@board[5][4] = BLACK
+      @board[4][4] = WHITE
+      @board[5][5] = WHITE
+      @board[4][5] = BLACK
+      @board[5][4] = BLACK
     end
 
     # 盤面を表示
@@ -108,7 +108,7 @@ class Othello
       # 行座標
       (0..MAX_ROW - 1).each { |i|
         print i.to_s + " "
-        row = @@board[i]
+        row = @board[i]
         row.each { |stone|
           print stone
         }
@@ -140,7 +140,7 @@ class Othello
 
       (0..MAX_ROW - 1).each { |row_num|
         (0..MAX_COL - 1).each { |col_num|
-          if @@board[row_num][col_num] != BLANK
+          if @board[row_num][col_num] != BLANK
             next
           end
 
@@ -150,7 +150,7 @@ class Othello
             search_row = row_num + direction[0]
             search_col = col_num + direction[1]
             # 相手の石で無い場合は次の方向を確認
-            if @@board[search_row][search_col] != enemy
+            if @board[search_row][search_col] != enemy
               next
             end
 
@@ -158,9 +158,9 @@ class Othello
             while true
               search_row += direction[0]
               search_col += direction[1]
-              if @@board[search_row][search_col] != enemy && @@board[search_row][search_col] != turn
+              if @board[search_row][search_col] != enemy && @board[search_row][search_col] != turn
                 break
-              elsif @@board[search_row][search_col] == enemy
+              elsif @board[search_row][search_col] == enemy
                 next
               else
                 can_put_pos_list << [row_num, col_num]
@@ -180,15 +180,15 @@ class Othello
     end
 
     def reverse(put_row, put_col)
-      enemy = get_enemy(@@turn)
+      enemy = get_enemy(@turn)
       directions = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
-      @@board[put_row][put_col] = @@turn
+      @board[put_row][put_col] = @turn
       directions.each { |direction|
         reverse_pos = []
         reverse_row = put_row + direction[0]
         reverse_col = put_col + direction[1]
-        if @@board[reverse_row][reverse_col] != enemy
+        if @board[reverse_row][reverse_col] != enemy
           next
         end
 
@@ -197,9 +197,9 @@ class Othello
         while true
           reverse_row += direction[0]
           reverse_col += direction[1]
-          if @@board[reverse_row][reverse_col] == enemy
+          if @board[reverse_row][reverse_col] == enemy
             reverse_pos << [reverse_row, reverse_col]
-          elsif @@board[reverse_row][reverse_col] == @@turn
+          elsif @board[reverse_row][reverse_col] == @turn
             reverse_flag = true
             break
           else
@@ -210,7 +210,7 @@ class Othello
         # 間にあった相手の石を裏返す
         if reverse_flag
           reverse_pos.each { |pos|
-            @@board[pos[0]][pos[1]] = @@turn
+            @board[pos[0]][pos[1]] = @turn
           }
         end
       }
@@ -228,7 +228,7 @@ class Othello
     def print_result()
       black_num = 0
       white_num = 0
-      @@board.each { |row|
+      @board.each { |row|
         row.each { |stone|
           if stone == BLACK
             black_num += 1
@@ -250,10 +250,10 @@ class Othello
     end
 
     def change_turn()
-      if @@turn == BLACK
-        @@turn = WHITE
+      if @turn == BLACK
+        @turn = WHITE
       else
-        @@turn = BLACK
+        @turn = BLACK
       end
     end
 
