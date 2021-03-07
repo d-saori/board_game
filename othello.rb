@@ -5,6 +5,8 @@ class Othello
   WALL = "■ " # 外枠
   MAX_ROW = 10 # 行
   MAX_COL = 10 # 列
+  # 石を置いたマスの8方向(左隣のマスから時計回り)に引っくり返せる石が無いかチェック
+  DIRECTIONS = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
   @board = nil
   @turn = nil
@@ -135,8 +137,6 @@ class Othello
     def search_can_put_pos(turn)
       enemy = get_enemy(turn)
       can_put_pos_list = []
-      # 石を置いたマスの8方向(左隣のマスから時計回り)に引っくり返せる石が無いかチェック
-      directions = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
       (0..MAX_ROW - 1).each { |row_num|
         (0..MAX_COL - 1).each { |col_num|
@@ -145,7 +145,7 @@ class Othello
           end
 
           # 置いた石の周りに相手の石があるか確認
-          directions.each { |direction|
+          DIRECTIONS.each { |direction|
             can_put_flag = false
             search_row = row_num + direction[0]
             search_col = col_num + direction[1]
@@ -181,10 +181,9 @@ class Othello
 
     def reverse(put_row, put_col)
       enemy = get_enemy(@turn)
-      directions = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
       @board[put_row][put_col] = @turn
-      directions.each { |direction|
+      DIRECTIONS.each { |direction|
         reverse_pos = []
         reverse_row = put_row + direction[0]
         reverse_col = put_col + direction[1]
